@@ -1,6 +1,5 @@
 import { neon, neonConfig } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
-import { migrate } from "drizzle-orm/postgres-js/migrator";
 
 neonConfig.fetchConnectionCache = true;
 
