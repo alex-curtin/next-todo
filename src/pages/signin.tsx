@@ -2,12 +2,14 @@ import { SignIn } from "@clerk/nextjs";
 import Link from "next/link";
 
 const SigninPage = () => {
-	<div>
-		<SignIn />
+	return (
 		<div>
-			or <Link href="/signup">sign up</Link>
+			<SignIn />
+			<div>
+				or <Link href="/signup">sign up</Link>
+			</div>
 		</div>
-	</div>;
+	);
 };
 
 export default SigninPage;

@@ -4,6 +4,7 @@ import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/router";
 
 import { api } from "~/utils/api";
+import Sidebar from "~/components/sidebar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +20,8 @@ const Home = () => {
 	}
 
 	return (
-		<main className={` ${inter.className}`}>
+		<main className={`flex ${inter.className}`}>
+			<Sidebar />
 			<h1>todos app</h1>
 		</main>
 	);
