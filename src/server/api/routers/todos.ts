@@ -34,4 +34,34 @@ export const todosRouter = createTRPCRouter({
 
 			return newTodo;
 		}),
+
+	toggleComplete: privateProcedure
+		.input(
+			z.object({
+				completed: z.boolean(),
+				id: z.number(),
+			}),
+		)
+		.mutation(async ({ ctx, input }) => {
+			const updatedTodo = await ctx.db
+				.update(todos)
+				.set({
+					completed: input.completed,
+					updatedAt: new Date(),
+				})
+				.where(eq(todos.id, input.id))
+				.returning();
+
+			return updatedTodo;
+		}),
+
+	delete: privateProcedure
+		.input(
+			z.object({
+				id: z.number(),
+			}),
+		)
+		.mutation(async ({ ctx, input }) => {
+			await ctx.db.delete(todos).where(eq(todos.id, input.id));
+		}),
 });
