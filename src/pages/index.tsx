@@ -5,12 +5,13 @@ import { useRouter } from "next/router";
 
 import { api } from "~/utils/api";
 import Sidebar from "~/components/sidebar";
+import AddTodoForm from "~/components/add-todo-form";
+import TodosList from "~/components/todos-list";
 
 const inter = Inter({ subsets: ["latin"] });
 
 const Home = () => {
 	const router = useRouter();
-	const { data, isLoading } = api.todos.getAll.useQuery();
 	const { isLoaded, isSignedIn } = useUser();
 
 	if (!isLoaded) return null;
@@ -19,11 +20,16 @@ const Home = () => {
 		router.push("/signup");
 	}
 
+	const { data, isLoading } = api.todos.getAllCurrentUser.useQuery();
+
 	return (
-		<main className={`flex ${inter.className}`}>
+		<div className="flex bg-black text-white">
 			<Sidebar />
-			<h1>todos app</h1>
-		</main>
+			<main className={`${inter.className} w-1/2 border-r border-white/50`}>
+				<AddTodoForm />
+				<TodosList />
+			</main>
+		</div>
 	);
 };
 

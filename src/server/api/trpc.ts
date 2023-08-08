@@ -7,9 +7,12 @@ import { getAuth } from "@clerk/nextjs/server";
 
 export const createTRPCContext = (opts: CreateNextContextOptions) => {
 	const { req } = opts;
+	const session = getAuth(req);
+	const { userId } = session;
 
 	return {
 		db,
+		userId,
 	};
 };
 
@@ -29,3 +32,17 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
 
 export const createTRPCRouter = t.router;
 export const publicProcedure = t.procedure;
+
+const checkUserIsAuthed = t.middleware(async ({ ctx, next }) => {
+	if (!ctx.userId) {
+		throw new TRPCError({ code: "UNAUTHORIZED" });
+	}
+
+	return next({
+		ctx: {
+			userId: ctx.userId,
+		},
+	});
+});
+
+export const privateProcedure = t.procedure.use(checkUserIsAuthed);
